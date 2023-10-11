@@ -9,8 +9,7 @@ args = aparser.parse_args()
 test_type = args.test_type[0]
 delay_flag = args.delay_flag[0]
 
-cmd = 'python3 ' + test_type
-print(cmd)
+cmd = 'python3 ' + test_type 
 process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 stdout_output = process.stdout.decode('utf-8')
