@@ -8,14 +8,14 @@ clock_thread.daemon = True  # Making it a daemon thread so that it doesn't block
 clock_thread.start()
 
 ## Setting random time-delays and unicast communication
-thread1 = threading.Thread(target= (lambda: a.transmit("M1 1->3", 1, 2, 0))) 
-thread2 = threading.Thread(target= (lambda: a.transmit("M2 1->4", 1, 4, 2))) 
-thread3 = threading.Thread(target= (lambda: a.transmit("M3 2->3", 2, 3, 4))) 
-thread4 = threading.Thread(target= (lambda: a.transmit("M3 1->2", 1, 2, 6))) 
-thread5 = threading.Thread(target= (lambda: a.transmit("M3 2->3", 2, 3, 8))) 
-thread6 = threading.Thread(target= (lambda: a.transmit("M3 4->1", 4, 1, 10))) 
-thread7 = threading.Thread(target= (lambda: a.transmit("M3 3->1", 3, 1, 12))) 
-thread8 = threading.Thread(target= (lambda: a.transmit("M3 1->2", 1, 2, 14))) 
+thread1 = threading.Thread(target= (lambda: a.transmit("M1", 1, 2, 0))) 
+thread2 = threading.Thread(target= (lambda: a.transmit("M2", 1, 4, 2))) 
+thread3 = threading.Thread(target= (lambda: a.transmit("M3", 2, 3, 4))) 
+thread4 = threading.Thread(target= (lambda: a.transmit("M4", 1, 2, 6))) 
+thread5 = threading.Thread(target= (lambda: a.transmit("M5", 2, 3, 8))) 
+thread6 = threading.Thread(target= (lambda: a.transmit("M6", 4, 1, 10))) 
+thread7 = threading.Thread(target= (lambda: a.transmit("M7", 3, 1, 12))) 
+thread8 = threading.Thread(target= (lambda: a.transmit("M8", 1, 2, 14))) 
 
 threads_t = [thread1, thread2, thread3, thread4, thread5, thread6, thread7, thread8]
 while True:
