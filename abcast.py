@@ -9,6 +9,7 @@ class abcast_node:
         self.r_queue =  []
         self.delivered_messages = []
         self.id = nid
+        self.stored_ts  = {}
     
     def reorder_r_queue(self):
         self.r_queue.sort(key = lambda x : x[1]) ## sort on the basis of the timestamp
@@ -33,18 +34,25 @@ class abcast_node:
                 return
             else:
                 self.delivered_messages.append((ts,ms))
-                print(self.id, " accepts Message = ", ms)
+                #print(self.id, " accepts Message = ", ms)
         self.r_queue = []
         return 
 
     def receive_message(self, message):
         self.local_timestamp += 1
         self.r_queue.append((0,self.local_timestamp, message)) ## 0 flag depicts undelivered (ud)
+        self.stored_ts[message] = deepcopy(self.local_timestamp)
         return
     
-    def return_local_timestamp_message(self):
-        cpy = deepcopy(self.local_timestamp)
+    def return_local_timestamp_message(self, message):
+        #cpy = deepcopy(self.local_timestamp)
+        return self.stored_ts[message] 
+    
+    def return_and_del_local_tsm(self, message):
+        #cpy = deepcopy(self.local_timestamp)
+        cpy = self.stored_ts.pop(message, self.local_timestamp)
         return cpy
+    
             
 class abcast_system:
     def __init__(self, n):
@@ -63,8 +71,8 @@ class abcast_system:
             self.nodes[node_num].receive_message(message)
             print("Node Number = ", node_num, " recieved broadcast of message =", message, " at t = ", self.global_clock)
             time.sleep(max(0, validation_ts))
-            print("Node Number = ", node_num, " sends back local copy of ts = ", self.nodes[node_num].return_local_timestamp_message(), " at t = ", self.global_clock)
-            return self.nodes[node_num].return_local_timestamp_message()
+            print("Node Number = ", node_num, " sends back local copy of ts = ", self.nodes[node_num].return_local_timestamp_message(message), " at t = ", self.global_clock)
+            return self.nodes[node_num].return_and_del_local_tsm(message)
             
         elif action == "host_sends_validation":
             print("for node == ", node_num, " at t= ", self.global_clock, " init queue = ", deepcopy(self.nodes[node_num].r_queue))
@@ -84,7 +92,7 @@ class abcast_system:
         ## rec_delays - defines delays sender -> initial reciept
         ## reply_delays - defines delays in rec -> sender ts relay
         ## commit_delays - defines sender -> commit time delays
-        max_g_timestamp = self.nodes[n_from].local_timestamp
+        max_g_timestamp = deepcopy(self.nodes[n_from].local_timestamp)
         threads = []
         queues_storing_ts = []
 
@@ -93,6 +101,7 @@ class abcast_system:
             def combined_function(ans_storage, reciever, del1, del2):
                 ttt = self.schedule_action(reciever, "rec_broadcast", del1, message, del2) ## defined link delays
                 ans_storage.put(ttt)
+                print("For Node = ", reciever,"Local timestamp for M = ", message, " set to ", ttt)
                 return ans_storage
             locale_ts_reciept = queue.Queue()
             thread = threading.Thread(target= combined_function, args=(locale_ts_reciept,reciever, rec_delays[index], reply_delays[index]))
@@ -101,7 +110,7 @@ class abcast_system:
 
         for thread in threads:
             thread.start()
-        print("All communications Started!")
+        #print("All communications Started!")
         # for thread in threads:
         #     thread.join()
         for q in queues_storing_ts:
@@ -121,7 +130,7 @@ class abcast_system:
             thread.start()
         for thread in threads:
             thread.join()
-        print("Successfully Done!")
+        #print("Successfully Done!")
         return
     
     def start_global_clock(self):
@@ -130,7 +139,7 @@ class abcast_system:
             self.global_clock += 1
             self.event.set()
             self.event.clear()
-            if self.global_clock == 50:
+            if self.global_clock == 20:
                 break
 
         

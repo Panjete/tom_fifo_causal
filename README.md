@@ -8,6 +8,6 @@
 
 4. The test cases rigorously analyse and yield the protocol's behaviour, and their respective features are as follows :-
 
-    * `t1.py` - dsafghiuhflado
+    * `t1.py` - 3 Nodes with only Multicast Traffic. Final Print statements show the order of messages in which they are passed to the delivery queue. Interim messages printed show the timestamp-communication mechanism at work. This is 
     ------
     * `t2.py` - dslafvjlkpjdfo
