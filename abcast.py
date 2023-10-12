@@ -40,7 +40,7 @@ class abcast_node:
 
     def receive_message(self, message):
         self.local_timestamp += 1
-        self.r_queue.append((0,self.local_timestamp, message)) ## 0 flag depicts undelivered (ud)
+        self.r_queue.append((0,deepcopy(self.local_timestamp), message)) ## 0 flag depicts undelivered (ud)
         self.stored_ts[message] = deepcopy(self.local_timestamp)
         return
     
@@ -52,6 +52,11 @@ class abcast_node:
         #cpy = deepcopy(self.local_timestamp)
         cpy = self.stored_ts.pop(message, self.local_timestamp)
         return cpy
+    
+    def receive_uni(self, message):
+        self.local_timestamp += 1
+        self.delivered_messages.append((deepcopy(self.local_timestamp), message))
+        return
     
             
 class abcast_system:
@@ -82,8 +87,14 @@ class abcast_system:
             print("for node == ", node_num, " at t= ", self.global_clock, " queue after valid_msg_rcpt = ", deepcopy(self.nodes[node_num].r_queue))
             print("Node Number = ", node_num, " fully recieves back message  =", message, " at t = ", self.global_clock)
             return 0
+        
+    def schedule_uni(self, node_num, induced_delay, message):
+        ## Has rec_unicast, when it sends message one-way
+        time.sleep(max(0, induced_delay))
+        self.nodes[node_num].receive_uni(message)
+        print("Node Number = ", node_num, " recieved unicast of message =", message, " at t = ", self.global_clock)
+        return 
             
-
     def emit(self, message,  n_from, ns_to, rec_delays, reply_delays, commit_delays):
         ## Does the full broadcast and per-node queue updation
         ## message - the string being shared itself
@@ -128,9 +139,24 @@ class abcast_system:
 
         for thread in threads_v:
             thread.start()
-        for thread in threads:
+        for thread in threads_v:
             thread.join()
         #print("Successfully Done!")
+        return
+    
+    def transmit(self, message,  n_from, n_to, rec_delay):
+        ## Does the unicast and per-node queue updation
+        ## message - the string being shared itself
+        ## n_from - the node which shares
+        ## n_to  - node being shared to
+        ## rec_delay - defines delay sender -> reciept
+
+        def combined_function(reciever, del1, message):
+            ttt = self.schedule_uni(reciever, del1, message) ## defined link delays
+            return
+        thread = threading.Thread(target= combined_function, args=(n_to, rec_delay, message)) 
+        thread.start()
+        thread.join()
         return
     
     def start_global_clock(self):
