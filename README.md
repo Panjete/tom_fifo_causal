@@ -20,7 +20,7 @@
 
 ## Implementation Details
 
-### `Class abcast_node`
+### Class `abcast_node`
 Built to simulate a communicating node. Has the following attributes :-
 
 * `local_timestamp` - Indicates serial number used for indexing received messages
@@ -41,7 +41,7 @@ An abcast_node can perform the following methods to manipulate it's  state :-
 * `return_local_timestamp_message()` - for reporting local timestamp to sender
 
 
-### Class abcast_system
+### Class `abcast_system`
 
 Built to simulate a system of communicating nodes. Has the following attributes :- 
 
