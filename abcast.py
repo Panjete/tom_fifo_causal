@@ -165,7 +165,7 @@ class abcast_system:
             self.global_clock += 1
             self.event.set()
             self.event.clear()
-            if self.global_clock == 20:
+            if self.global_clock == 100:
                 break
 
         

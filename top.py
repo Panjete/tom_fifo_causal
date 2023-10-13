@@ -3,12 +3,11 @@ import argparse
 
 aparser = argparse.ArgumentParser(description="Process test case scenarios")
 aparser.add_argument("test_type", nargs=1)
-aparser.add_argument("delay_flag", nargs=1)
 args = aparser.parse_args()
 
 test_type = args.test_type[0]
-delay_flag = args.delay_flag[0]
 
+print("Waiting for test case to execute:")
 cmd = 'python3 ' + test_type 
 process = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

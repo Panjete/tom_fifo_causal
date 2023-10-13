@@ -1,4 +1,6 @@
-from copy import deepcopy, copy
+from copy import deepcopy
+
+## Houses Causal Ordering Implementation, not relevant for this analysis though.
 
 class vector_clock:
     ## Each vector_clock class object has the following attributes
@@ -165,39 +167,4 @@ if test_case_number == 2:
     node_3.recieve_message(m3, 2, True)
     node_3.recieve_message(m3, 1, True)
 
-if test_case_number == 3:
-    a = nodes_collection(3)
-    node_1 = a.nodes[1]
-    node_2 = a.nodes[2]
-    node_3 = a.nodes[3]
 
-    m1 = a.start_sending_message_multicast(1)
-    m2 = a.start_sending_message_multicast(1)
-
-    print("m1 = ", m1)
-    print("m2 = ", m2)
-
-    a.recieve_message_multicast(1, 2, m1)
-    a.recieve_message_multicast(1, 2, m2)
-
-    a.recieve_message_multicast(1, 3, m2)
-    a.recieve_message_multicast(1, 3, m1)
-
-    m3 = a.start_sending_message_multicast(2)
-
-    a.recieve_message_multicast(2, 3, m3)
-    
-    a.recieve_message_multicast(1, 3, m3)
-
-
-
-
-
-
-
-
-# a.transfer_message(1, 2, True)
-# a.transfer_message(2, 1, True)
-# a.transfer_message(2, 3, False)
-# a.transfer_message(1, 3, False)
-    
