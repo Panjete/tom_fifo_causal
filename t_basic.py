@@ -9,7 +9,7 @@ clock_thread.start()
 
 ## Co-ordinating time-delays so that  so that 
 thread1 = threading.Thread(target= (lambda: a.emit("M1", 1, [1,2], [0, 1], [0, 1], [0, 1]))) 
-thread2 = threading.Thread(target= (lambda: a.emit("M2", 2, [1,2], [2, 2], [2, 2], [2, 2]))) 
+thread2 = threading.Thread(target= (lambda: a.emit("M2", 2, [1,2], [2, 2], [2, 0], [2, 0]))) 
 thread3 = threading.Thread(target= (lambda: a.emit("M3", 1, [1,2], [0, 1], [0, 1], [0, 1]))) 
 
 while True:
