@@ -14,9 +14,16 @@
     ------
     * `t_uni_multi.py` - Simulation showing communication in which both unicast and multicast operations are performed. The unicast messages are simply delivered to the delivery queue, while the multicast messaages still show total ordering.
     ------
+
     * `t_multi_uni.py` -  Nodes with Multicast Traffic, with unicast messages interspersed in between. We can observe that the multicast messages retain ordering despite unicast messages fiddling with timestamps! All communication of different messages overlaps with each other yet the mechanism is able to determine required order. Final Print statements show the order of messages in which they are passed to the delivery queue.
 
 4. `vector_clock.py` - functionality for Causal Order Multicast
+
+## Algorithm
+
+<p align='center'>
+<img width="483" alt="Screenshot 2023-11-23 at 11 46 46 PM" src="https://github.com/Panjete/tom_fifo_causal/assets/103451209/25abbc9a-64ab-497f-afe2-2fa55794ee13">
+</p>
 
 ## Implementation Details
 
